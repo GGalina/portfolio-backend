@@ -1,7 +1,7 @@
 # Email Sender Backend
 
 This Node.js backend application allows you to send emails using an API. It uses NodeMailer for email handling.
-The backend service for this project can be accessed at https://learnlingo-email-sender-backend.onrender.com
+The backend service for this project can be accessed at https://portfolio-backend-uoe9.onrender.com
 
 ## Prerequisites
 

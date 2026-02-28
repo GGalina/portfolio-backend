@@ -1,29 +1,33 @@
 require('dotenv').config();
-const sgMail = require('@sendgrid/mail');
-const { SENDGRID_API_KEY, SENDGRID_FROM, SENDGRID_TO } = process.env;
-sgMail.setApiKey(SENDGRID_API_KEY);
+const nodemailer = require('nodemailer');
+
+const { GMAIL_ADDRESS_FROM, GMAIL_APP_PASSWORD, GMAIL_ADDRESS_TO} = process.env;
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: GMAIL_ADDRESS_FROM,
+    pass: GMAIL_APP_PASSWORD,
+  },
+});
 
 const sendEmail = async (req, res, next) => {
-    try {
-        const { name, email, message } = req.body;
-        console.log(process.env.SENDGRID_API_KEY);
-        const contact = {
-            to: SENDGRID_TO,
-            from: SENDGRID_FROM,
-            subject: "This email generated from Halyna Hryn Portfolio website",
-            text: `Name: ${name}\n Email: ${email}\n  Message: ${message} `,
-        }
-        
-        await sgMail.send(contact);
+  try {
+    const { name, email, message } = req.body;
 
-        res.status(200).json({
-            message: 'Email sent'
-        });
-    } catch (error) {
-        next(error);
-    }
+    const mailOptions = {
+      from: GMAIL_ADDRESS_FROM, 
+      to: GMAIL_ADDRESS_TO, 
+      subject: 'This email generated from Halyna Hryn Portfolio website',
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Email sent' });
+  } catch (error) {
+    next(error);
+  }
 };
 
-module.exports = {
-    sendEmail
-};
+module.exports = { sendEmail };

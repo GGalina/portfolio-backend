@@ -43,9 +43,9 @@ const sendEmail = async (req, res, next) => {
       requestBody: { raw: encodedMessage },
     });
 
-    res.status(200).json({ message: 'Email sent successfully via Gmail API' });
+    res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('Error sending email via Gmail API:', error);
+    console.error('Error sending email: ', error);
     next({ status: 500, message: 'Failed to send email', details: error.message });
   }
 };

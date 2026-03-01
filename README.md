@@ -1,6 +1,6 @@
 # Email Sender Backend
 
-This Node.js backend application allows you to send emails via an API. It uses Nodemailer with Gmail OAuth2 for sending emails.
+This Node.js backend allows you to send emails from your portfolio website using the Gmail API with OAuth2 for authentication.
 
 The backend service for this project is deployed and available at: http://portfolio-backend-production-8bf4.up.railway.app
 

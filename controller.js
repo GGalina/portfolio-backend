@@ -27,7 +27,7 @@ const sendEmail = async (req, res, next) => {
 
     // Build email content
     const mailOptions = {
-      from: {GMAIL_ADDRESS_FROM},
+      from: GMAIL_ADDRESS_FROM,
       to: GMAIL_ADDRESS_TO,
       subject: 'Message from Halyna Hryn Portfolio Website',
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,

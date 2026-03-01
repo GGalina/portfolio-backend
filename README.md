@@ -1,12 +1,16 @@
 # Email Sender Backend
 
-This Node.js backend application allows you to send emails using an API. It uses NodeMailer for email handling.
-The backend service for this project can be accessed at https://portfolio-backend-uoe9.onrender.com
+This is a Node.js backend application for sending emails from a contact form.
+It uses Nodemailer with Gmail SMTP authentication (Google App Password) to securely send emails.
+
+The backend service for this project is deployed and available at: http://portfolio-backend-production-8bf4.up.railway.app
 
 ## Prerequisites
 
 - Node.js installed on your machine
 - NPM (Node Package Manager) installed
+- A Gmail account with 2-Step Verification enabled
+- A Google App Password for email sending
 
 ## Installation
 
@@ -33,9 +37,11 @@ npm install
 Create a .env file with your configuration setting
 
 ```javascript
-SENDGRID_API_KEY='YOUR-SENDGRID-API-KEY'
-SENDGRID_FROM='YOUR-FROM-EMAIL'
-SENDGRID_TO='YOUR-TO-EMAIL'
+PORT=3000
+GMAIL_ADDRESS_FROM=yourgmail@gmail.com
+GMAIL_APP_PASSWORD=your_google_app_password
+GMAIL_ADDRESS_TO=yourgmail@gmail.com
+ALLOWED_ORIGINS=http://localhost:5173,https://your-frontend-domain.com
 ```
 
 ## Usage

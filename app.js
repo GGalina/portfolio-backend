@@ -10,25 +10,19 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
   : ['http://localhost:3000'];
 
-// app.use(cors({
-//   origin: (origin, callback) => {
-
-//     // Allow requests with no origin (like Postman)
-//     if (!origin) return callback(null, true);
-
-//     if (allowedOrigins.includes(origin)) {
-//       return callback(null, true);
-//     } else {
-//       return callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   methods: ['GET', 'POST'],
-//   credentials: true
-// }));
-
 app.use(cors({
-  origin: true,
-  methods: ['GET','POST'],
+  origin: (origin, callback) => {
+
+    // Allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],
   credentials: true
 }));
 

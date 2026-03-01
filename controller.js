@@ -1,5 +1,5 @@
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 
 const {
   GMAIL_ADDRESS_FROM,
@@ -9,41 +9,44 @@ const {
   GMAIL_REFRESH_TOKEN,
 } = process.env;
 
-// Create OAuth2 transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    type: 'OAuth2',
-    user: GMAIL_ADDRESS_FROM,
-    clientId: GMAIL_CLIENT_ID,
-    clientSecret: GMAIL_CLIENT_SECRET,
-    refreshToken: GMAIL_REFRESH_TOKEN,
-  },
-});
+// OAuth2 client
+const oAuth2Client = new google.auth.OAuth2(
+  GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET
+);
+
+oAuth2Client.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
 
 const sendEmail = async (req, res, next) => {
   try {
     const { name, email, message } = req.body;
 
-    // Build email content
-    const mailOptions = {
-      from: GMAIL_ADDRESS_FROM,
-      to: GMAIL_ADDRESS_TO,
-      subject: 'Message from Halyna Hryn Portfolio Website',
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-    };
+    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    const emailBody = [
+      `From: "Portfolio Contact" <${GMAIL_ADDRESS_FROM}>`,
+      `To: ${GMAIL_ADDRESS_TO}`,
+      `Subject: Message from Halyna Hryn Portfolio Website`,
+      'Content-Type: text/plain; charset="UTF-8"',
+      '',
+      `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+    ].join('\n');
 
-    res.status(200).json({ message: 'Email sent successfully' });
-  } catch (error) {
-    console.error('Error sending email:', error);
-    next({
-      status: 500,
-      message: 'Failed to send email',
-      details: error.message,
+    const encodedMessage = Buffer.from(emailBody)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+    await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: { raw: encodedMessage },
     });
+
+    res.status(200).json({ message: 'Email sent successfully via Gmail API' });
+  } catch (error) {
+    console.error('Error sending email via Gmail API:', error);
+    next({ status: 500, message: 'Failed to send email', details: error.message });
   }
 };
 

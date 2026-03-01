@@ -8,7 +8,7 @@ const app = express();
 // Parse ALLOWED_ORIGINS from .env
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:8080'];
+  : ['http://localhost:3000'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

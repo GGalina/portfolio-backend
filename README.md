@@ -1,7 +1,6 @@
 # Email Sender Backend
 
-This is a Node.js backend application for sending emails from a contact form.
-It uses Nodemailer with Gmail SMTP authentication (Google App Password) to securely send emails.
+This Node.js backend application allows you to send emails via an API. It uses Nodemailer with Gmail OAuth2 for sending emails.
 
 The backend service for this project is deployed and available at: http://portfolio-backend-production-8bf4.up.railway.app
 
@@ -9,8 +8,7 @@ The backend service for this project is deployed and available at: http://portfo
 
 - Node.js installed on your machine
 - NPM (Node Package Manager) installed
-- A Gmail account with 2-Step Verification enabled
-- A Google App Password for email sending
+- A Gmail account for sending emails
 
 ## Installation
 
@@ -37,11 +35,13 @@ npm install
 Create a .env file with your configuration setting
 
 ```javascript
-PORT=3000
-GMAIL_ADDRESS_FROM=yourgmail@gmail.com
-GMAIL_APP_PASSWORD=your_google_app_password
-GMAIL_ADDRESS_TO=yourgmail@gmail.com
-ALLOWED_ORIGINS=http://localhost:5173,https://your-frontend-domain.com
+GMAIL_ADDRESS_FROM=your-email@gmail.com
+GMAIL_ADDRESS_TO=recipient-email@gmail.com
+GMAIL_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GMAIL_CLIENT_SECRET=your-google-client-secret
+GMAIL_REFRESH_TOKEN=your-google-refresh-token
+ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend-domain.com
+PORT=8080
 ```
 
 ## Usage
@@ -70,3 +70,10 @@ The server will be running at http://localhost:3000 by default.
 ```
 
 Make a POST request to /send-email with the necessary details in the request body to send an email.
+
+Example Response:
+```json
+{
+  "message": "Email sent successfully"
+}
+```
